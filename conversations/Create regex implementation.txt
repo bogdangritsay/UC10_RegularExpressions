@@ -1,0 +1,80 @@
+GPT-4
+
+User
+Java
+Create a function implementing the regular expression validation according to the defined acceptance criteria. The function should accept the string to match and return the Boolean matching result.
+
+Compose a function with a single regular expression that successfully meets requirements below:
+•	This regular expression should validate the maximum string length (passed as parameter); it should return a match if the string length is within the acceptable range and a non-match if it is not.
+•	This regular expression should also validate that the string contains at least one uppercase letter, one lowercase letter, one digit, and one special character from a predefined list: !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~. It should return a match if the criteria are met and a non-match if they are not.
+•	This regular expression should validate that the string does not contain any whitespace characters (spaces, tabs, or newlines). This should return a non-match if any whitespace characters are found.
+•	The regular expression should be optimized for execution speed and simplicity. The regular expression should still fulfill all the above criteria.
+•	The regular expression should be tested in code on a variety of sample inputs and edge cases (10) to ensure the regex is functioning properly.
+•	The regular expression should be implemented within the code in a way that it can be easily reused for various inputs.
+•	Implementation should not introduce any unexpected behavior or bugs.
+•	Clear and concise documentation should be provided for the regular expression, explaining how it works, and any caveats or limitations.
+ChatGPT
+Let's break down the requirements and implement the solution step by step.
+
+Step 1: Define the Regular Expression
+To match all the criteria:
+
+Maximum string length is parameterized.
+Contains at least one uppercase letter: [A-Z]
+Contains at least one lowercase letter: [a-z]
+Contains at least one digit: \d
+Contains at least one special character from the list: [\Q!"#$%&'()*+,-./:;<=>?@[\]^_{|}~\E]`
+No whitespace characters: We will ensure this by using ^ and $ to mark the start and end of the line.
+Using positive lookaheads, we can create the following regular expression:
+
+regex
+Copy code
+^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\Q!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~\E])(?!.*\s).{1,PARAMETERIZED_LENGTH}$
+Step 2: Implement the Java Function
+java
+Copy code
+import java.util.regex.Pattern;
+
+public class RegexValidator {
+    private static final String SPECIAL_CHARACTERS = "\\Q!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~\\E";
+
+    public static boolean validateString(String str, int maxLength) {
+        String regex = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[" + SPECIAL_CHARACTERS + "])(?!.*\\s).{1," + maxLength + "}$";
+        Pattern pattern = Pattern.compile(regex);
+        return pattern.matcher(str).matches();
+    }
+
+    public static void main(String[] args) {
+        // Test cases
+        String[] tests = {
+            "Aa1!",        // True: Meets all criteria
+            "Aa1! ",       // False: Contains whitespace
+            "Aa!",         // False: Missing digit
+            "aa1!",        // False: Missing uppercase
+            "AA1!",        // False: Missing lowercase
+            "Aab!",        // False: Missing digit
+            "Aa1b",        // False: Missing special character
+            "Aa1!Aa1!Aa1!Aa1!Aa1!Aa1!Aa1!Aa1!Aa1!Aa1!", // False: Exceeds maxLength
+            "Aa1!Aa1",     // True: Meets all criteria
+            "Aa1!@#",      // True: Meets all criteria
+        };
+        int maxLength = 20;
+        for (String test : tests) {
+            System.out.println(validateString(test, maxLength));
+        }
+    }
+}
+Step 3: Documentation
+Regular Expression Explanation:
+^: Denotes the beginning of the line.
+(?=.*[A-Z]): Positive lookahead for one uppercase letter.
+(?=.*[a-z]): Positive lookahead for one lowercase letter.
+(?=.*\d): Positive lookahead for one digit.
+(?=.*[SPECIAL_CHARACTERS]): Positive lookahead for one special character from the predefined list.
+(?!.*\s): Negative lookahead to ensure there's no whitespace character in the string.
+.{1,PARAMETERIZED_LENGTH}$: Ensures the length of the string is between 1 and the given maximum length (inclusive).
+$: Denotes the end of the line.
+Caveats and Limitations:
+The minimum valid string length is 4 since it needs at least one uppercase, one lowercase, one digit, and one special character.
+The maximum valid string length is specified by the maxLength parameter.
+The list of special characters is predefined and should not be changed without updating the regular expression accordingly.
