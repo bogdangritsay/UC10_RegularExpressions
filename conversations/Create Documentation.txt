@@ -1,0 +1,334 @@
+GPT-4
+
+User
+o	Update Readme.md with
+	Application description: 1 paragraph, 2-5 Sentences.
+	Regex implementation description: 1 paragraph, 4-10 Sentences.
+	Information on how to run the developed application locally.
+
+
+App:
+package org.example;
+
+import java.util.regex.Pattern;
+
+public class RegexValidator {
+    private static final String SPECIAL_CHARACTERS = "\\Q!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~\\E";
+
+    private RegexValidator() {}
+
+    /**
+     *
+     * @param str string for validationb
+     * @param maxLength num
+     * @return true if string validated successfully, fails if is not
+     *
+     * Regular Expression Explanation:
+     * ^: Denotes the beginning of the line.
+     * (?=.*[A-Z]): Positive lookahead for one uppercase letter.
+     * (?=.*[a-z]): Positive lookahead for one lowercase letter.
+     * (?=.*\d): Positive lookahead for one digit.
+     * (?=.*[SPECIAL_CHARACTERS]): Positive lookahead for one special character from the predefined list.
+     * (?!.*\s): Negative lookahead to ensure there's no whitespace character in the string.
+     * .{1,PARAMETERIZED_LENGTH}$: Ensures the length of the string is between 1 and the given maximum length (inclusive).
+     * $: Denotes the end of the line.
+     * Caveats and Limitations:
+     * The minimum valid string length is 4 since it needs at least one uppercase, one lowercase, one digit, and one special character.
+     * The maximum valid string length is specified by the maxLength parameter.
+     * The list of special characters is predefined and should not be changed without updating the regular expression accordingly.
+     */
+    public static boolean validateString(String str, int maxLength) {
+        String regex = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[" + SPECIAL_CHARACTERS + "])(?!.*\\s).{1," + maxLength + "}$";
+        Pattern pattern = Pattern.compile(regex);
+        return pattern.matcher(str).matches();
+    }
+
+}
+
+
+pom.xml:
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.example</groupId>
+  <artifactId>UC10RegularExpressions</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>UC10RegularExpressions</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <sonar.organization>bogdangritsay</sonar.organization>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+  </properties>
+
+  <dependencies>
+    <!-- JUnit Jupiter API for writing tests -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.8.0</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- JUnit Jupiter Engine for running tests -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.8.0</version>
+      <scope>test</scope>
+    </dependency>
+
+
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>9</source>
+          <target>9</target>
+        </configuration>
+      </plugin>
+      <!-- Maven Surefire Plugin configuration for JUnit 5 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.22.2</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.8.0</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+  </build>
+</project>
+
+ChatGPT
+Readme.md
+Application Description
+UC10RegularExpressions is a Java-based application designed to validate input strings based on certain criteria. It checks the input for the presence of uppercase letters, lowercase letters, digits, and special characters, while also ensuring the string adheres to a predefined length.
+
+Regex Implementation Description
+The RegexValidator class uses a regular expression to perform validation on input strings. The regex pattern it utilizes has multiple components:
+
+It mandates the presence of at least one uppercase and one lowercase character.
+It requires at least one digit.
+It necessitates one of the predefined special characters.
+It ensures that the string does not contain any whitespace characters.
+The length of the string is constrained between a minimum of 4 (to meet the basic criteria) and a user-specified maximum length. The list of special characters can be found in the SPECIAL_CHARACTERS constant within the class. Any modifications to this list should be accompanied by a corresponding update to the regex pattern.
+How to Run the Developed Application Locally
+Ensure you have Java and Maven installed on your local machine.
+Clone the repository to your local machine.
+Navigate to the project root directory where pom.xml is located.
+Compile the code using the command:
+bash
+Copy code
+mvn compile
+Run the tests (if any) with the following command:
+bash
+Copy code
+mvn test
+To execute the application, you may create a driver or main method that uses the RegexValidator.validateString method and then run it using your preferred IDE or command line.
+Note: This application primarily serves as a utility for string validation and does not contain a standalone executable main method. The instructions provided focus on compilation and testing.
+
+
+
+
+User
+Create this for .md file
+ChatGPT
+Sure, here's the content for the Readme.md:
+
+markdown
+Copy code
+# UC10RegularExpressions
+
+## Application Description
+`UC10RegularExpressions` is a Java-based application designed to validate input strings based on certain criteria. It checks the input for the presence of uppercase letters, lowercase letters, digits, and special characters, while also ensuring the string adheres to a predefined length.
+
+## Regex Implementation Description
+The `RegexValidator` class uses a regular expression to perform validation on input strings. The regex pattern it utilizes has multiple components:
+- It mandates the presence of at least one uppercase and one lowercase character.
+- It requires at least one digit.
+- It necessitates one of the predefined special characters.
+- It ensures that the string does not contain any whitespace characters.
+
+The length of the string is constrained between a minimum of 4 (to meet the basic criteria) and a user-specified maximum length. The list of special characters can be found in the `SPECIAL_CHARACTERS` constant within the class. Any modifications to this list should be accompanied by a corresponding update to the regex pattern.
+
+## How to Run the Developed Application Locally
+
+1. **Pre-requisites**: Ensure you have Java and Maven installed on your local machine.
+2. **Clone**: Clone the repository to your local machine.
+3. **Navigate**: Navigate to the project root directory where `pom.xml` is located.
+4. **Compile**: Compile the code using the command:
+```bash
+mvn compile
+Test: Run the tests (if any) with the following command:
+bash
+Copy code
+mvn test
+Execute: To execute the application, you may create a driver or main method that uses the RegexValidator.validateString method and then run it using your preferred IDE or command line.
+Note: This application primarily serves as a utility for string validation and does not contain a standalone executable main method. The instructions provided focus on compilation and testing.
+
+css
+Copy code
+
+You can save the above markdown content into `Readme.md` to get a well-structured README for your project.
+
+
+
+User
+all file in markdown formatting
+ChatGPT
+Certainly! Let's format all the provided content in markdown:
+
+UC10RegularExpressions README
+Application Description
+UC10RegularExpressions is a Java-based application designed to validate input strings based on certain
+
+
+
+
+User
+no, I need to paste code to .md file
+ChatGPT
+Got it! If you want to embed the Java code and XML content into an .md file, here's the content for the Readme.md:
+
+UC10RegularExpressions
+Application Description
+UC10RegularExpressions is a Java-based application designed to validate input strings based on certain criteria. It checks the input for the presence of uppercase letters, lowercase letters, digits, and special characters, while also ensuring the string adheres to a predefined length.
+
+Regex Implementation Description
+
+
+
+User
+provide me what I need to put in mardown file
+ChatGPT
+I see, you want the entire content structured for a markdown file. Here you go:
+
+markdown
+Copy code
+# UC10RegularExpressions
+
+## Application Description
+
+`UC10RegularExpressions` is a Java-based application designed to validate input strings based on certain criteria. It checks the input for the presence of uppercase letters, lowercase letters, digits, and special characters, while also ensuring the string adheres to a predefined length.
+
+## Regex Implementation Description
+
+The `RegexValidator` class uses a regular expression to perform validation on input strings. The regex pattern it utilizes has multiple components:
+
+- It mandates the presence of at least one uppercase and one lowercase character.
+- It requires at least one digit.
+- It necessitates one of the predefined special characters.
+- It ensures that the string does not contain any whitespace characters.
+
+The length of the string is constrained between a minimum of 4 (to meet the basic criteria) and a user-specified maximum length. The list of special characters can be found in the `SPECIAL_CHARACTERS` constant within the class. Any modifications to this list should be accompanied by a corresponding update to the regex pattern.
+
+## Java Code Implementation
+
+```java
+package org.example;
+
+import java.util.regex.Pattern;
+
+public class RegexValidator {
+    private static final String SPECIAL_CHARACTERS = "\\Q!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~\\E";
+
+    private RegexValidator() {}
+
+    public static boolean validateString(String str, int maxLength) {
+        String regex = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[" + SPECIAL_CHARACTERS + "])(?!.*\\s).{1," + maxLength + "}$";
+        Pattern pattern = Pattern.compile(regex);
+        return pattern.matcher(str).matches();
+    }
+}
+Maven Configuration (pom.xml)
+xml
+Copy code
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.example</groupId>
+  <artifactId>UC10RegularExpressions</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>UC10RegularExpressions</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <sonar.organization>bogdangritsay</sonar.organization>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.8.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.8.0</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>9</source>
+          <target>9</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.22.2</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.8.0</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+  </build>
+</project>
+How to Run the Developed Application Locally
+Pre-requisites: Ensure you have Java and Maven installed on your local machine.
+Clone: Clone the repository to your local machine.
+Navigate: Navigate to the project root directory where pom.xml is located.
+Compile: Compile the code using the command:
+bash
+Copy code
+mvn compile
+Test: Run the tests (if any) with the following command:
+bash
+Copy code
+mvn test
+Execute: To execute the application, you may create a driver or main method that uses the RegexValidator.validateString method and then run it using your preferred IDE or command line.
+Note: This application primarily serves as a utility for string validation and does not contain a standalone executable main method. The instructions provided focus on compilation and testing.
+
+css
+Copy code
+
+You can copy and paste the content above directly into your `Readme.md` file. The use of triple backticks (```) allows you to format blocks of code in markdown.
