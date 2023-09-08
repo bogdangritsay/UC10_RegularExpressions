@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 public class RegexValidator {
     private static final String SPECIAL_CHARACTERS = "\\Q!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~\\E";
 
+    private RegexValidator() {}
 
     /**
      *
